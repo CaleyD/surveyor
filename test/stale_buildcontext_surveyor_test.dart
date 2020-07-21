@@ -12,7 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'package:surveyor/src/driver.dart';
 import 'package:test/test.dart';
 
 import '../example/stale_buildcontext_surveyor.dart';
@@ -20,23 +19,23 @@ import '../example/stale_buildcontext_surveyor.dart';
 Future<void> main() async {
   group('Stale BuildContext survey', () {
     test('stale', () async {
-      // TODO(caldavis): convert to relative path
       expect(
-        await analyze('test/data/stale_build_context_app'), 
-        [
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:10:28')),
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:27:16')),
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:34:14')),
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:38:16')),
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:40:13')),
-        ],
-      );
+        await analyzeForTest('test/data/stale_build_context_app'), 
+        contains('''
+  lint • Avoid referencing BuildContext after an await boundary at test/data/stale_build_context_app/lib/main.dart:10:28 • stale_buildcontext
+  lint • Avoid referencing BuildContext after an await boundary at test/data/stale_build_context_app/lib/main.dart:27:16 • stale_buildcontext
+  lint • Avoid referencing BuildContext after an await boundary at test/data/stale_build_context_app/lib/main.dart:34:14 • stale_buildcontext
+  lint • Avoid referencing BuildContext after an await boundary at test/data/stale_build_context_app/lib/main.dart:38:16 • stale_buildcontext
+  lint • Avoid referencing BuildContext after an await boundary at test/data/stale_build_context_app/lib/main.dart:40:13 • stale_buildcontext
+5 lints found.''',
+      ));
     });
   });
 }
 
-Future<Iterable<String>> analyze(String path) async {
-  var collector = StaleBuildContextAnalyzer();
-  await (Driver.forArgs([path])..visitor = collector).analyze();
-  return collector.issues.map((e) => e.toString()).toList();
+Future<String> analyzeForTest(String path) async {
+  var errors = await analyze([path]);
+  var buffer = StringBuffer();
+  displayResults(errors, buffer);
+  return buffer.toString();
 }
