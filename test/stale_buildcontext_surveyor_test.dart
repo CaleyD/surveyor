@@ -25,9 +25,10 @@ Future<void> main() async {
         await analyze('test/data/stale_build_context_app'), 
         [
           allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:10:28')),
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:24:16')),
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:30:14')),
-          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:34:16')),
+          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:27:16')),
+          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:34:14')),
+          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:38:16')),
+          allOf(startsWith('error • stale_buildcontext • '), endsWith('/test/data/stale_build_context_app/lib/main.dart:40:13')),
         ],
       );
     });
